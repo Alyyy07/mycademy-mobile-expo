@@ -3,8 +3,6 @@ import "./global.css";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
-import { Text, View } from "react-native";
-import { GlobalProvider } from "@/lib/global-context";
 
 export default function RootLayout() {
   const [fontLoaded] = useFonts({
@@ -39,10 +37,8 @@ export default function RootLayout() {
   if (!fontLoaded) return null;
 
   return (
-    <GlobalProvider>
       <GluestackUIProvider>
-        <Stack  screenOptions={{ headerShown:false, }}/>
+        <Stack screenOptions={{ headerShown:false, }}/>
       </GluestackUIProvider>
-    </GlobalProvider>
   );
 }
