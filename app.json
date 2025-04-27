@@ -13,13 +13,16 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.alyyy07.MyCademy"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon.png",
+        "foregroundImage": "./assets/images/icons/logo.png",
         "backgroundColor": "#212529"
-      }
+      },
+      "package": "com.alyyy07.MyCademy",
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "bundler": "metro",
@@ -36,10 +39,26 @@
           "resizeMode": "contain",
           "backgroundColor": "#212529"
         }
-      ]
+      ],
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.266720961272-c84k373c5ls49vccuflee0vsp74j8epq"
+        }
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "b204edb2-0073-411e-a415-08f164a42754"
+      }
+    },
+    "owner": "alyyy07"
   }
 }

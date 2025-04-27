@@ -30,6 +30,15 @@ export const windowWidth = (width: DimensionValue): number => {
   return PixelRatio.roundToNearestPixel(tempWidth);
 };
 
+export const validateEmail = (email: string) => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const isValid = re.test(String(email).toLowerCase());
+  return {
+    isValid,
+    message: "Masukkan Email yang valid",
+  }
+};
+
 export const fontSizes = {
   FONT6: windowWidth(6),
   FONT7: windowWidth(7),
@@ -57,4 +66,44 @@ export const fontSizes = {
   FONT30: windowWidth(30),
   FONT32: windowWidth(32),
   FONT35: windowWidth(35),
+};
+
+export const fetchAPI = async (url: string, method?: string, body?: any, timeout: number = 30000,token?:string) => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+  try {
+    const headers: HeadersInit = {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "X-CLIENT-ID": process.env.EXPO_PUBLIC_API_KEY!,
+    };
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+    const response = await fetch(url, {
+      method: method ?? "GET",
+      headers: headers,
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    if ((error as Error).name === "AbortError") {
+      console.log("Error: Request timed out");
+    } else {
+      console.log("Error:", error);
+    }
+    return {
+      status: "error",
+      message: "Terjadi kesalahan saat menghubungi server",
+    }
+  }
 };

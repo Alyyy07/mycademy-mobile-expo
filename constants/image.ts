@@ -1,11 +1,14 @@
 import logonotext from "@/assets/images/icons/logo.png";
-import eyeIcon from "@/assets/images/icons/eye.png";
-import eyeSlashIcon from "@/assets/images/icons/eye-slash.png";
 import google from "@/assets/images/icons/google.png";
+import validateIcon from "@/assets/images/icons/validate-email.png";
+import noResult from "@/assets/images/no-result.png";
+import bell from "@/assets/images/icons/bell.png";
+
 
 export const images = {
   logonotext,
-    eyeIcon,
-    eyeSlashIcon,
-    google
+    google,
+    validateIcon,
+    noResult,
+    bell
 };
