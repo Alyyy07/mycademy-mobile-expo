@@ -81,19 +81,31 @@ export const fetchAPI = async (url: string, method?: string, body?: any, timeout
     if (token) {
       headers["Authorization"] = `Bearer ${token}`;
     }
-    const response = await fetch(url, {
+
+    const init: {
+      method: string;
+      headers: Record<string, string>;
+      signal: AbortSignal;
+      body?: string;
+    } = {
       method: method ?? "GET",
       headers: headers,
-      body: JSON.stringify(body),
       signal: controller.signal,
-    });
+    }
+
+    if (body && (method !== "GET" && method !== "HEAD")) {
+      init['body'] = JSON.stringify(body);
+    }
+    const response = await fetch(url, init);
 
     clearTimeout(timeoutId);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
     const data = await response.json();
+    if (response.status !== 200) {
+      return {
+        status: "error",
+        message: data.message,
+      };
+    }
     return data;
   } catch (error) {
     if ((error as Error).name === "AbortError") {

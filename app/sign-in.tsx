@@ -19,7 +19,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 // import GoogleButton from "@/components/GoogleButton";
 import { useForms, useShowToast, useThrottle, useToggle } from "@/lib/hooks";
 import * as SecureStore from "expo-secure-store";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { EyeIcon, EyeOffIcon } from "@/components/ui/icon";
 
 const SignIn = () => {
@@ -44,6 +44,17 @@ const SignIn = () => {
 
   const { state: showPassword, handleState: setShowPassword } =
     useToggle(false);
+
+    useEffect(() => {
+      const fetchUserInfo = async () => {
+        const userInfo = await SecureStore.getItemAsync("userInfo");
+        if (userInfo) {
+          router.push("/(root)/(tabs)");
+        }
+      };
+  
+      fetchUserInfo();
+    }, []);
 
   const handleSubmit = async () => {
     if (
@@ -75,7 +86,6 @@ const SignIn = () => {
       }
     } else {
       if (result.status === "verify") {
-        showToast(result.message);
         router.push({
           pathname: "/validate-email",
           params: { email: result.data.email },
