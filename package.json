@@ -38,7 +38,7 @@
     "date-fns": "^4.1.0",
     "expo": "^52.0.0",
     "expo-constants": "~17.0.4",
-    "expo-dev-client": "^5.0.10",
+    "expo-dev-client": "~5.0.20",
     "expo-font": "~13.0.3",
     "expo-haptics": "~14.0.1",
     "expo-linear-gradient": "^14.0.2",
@@ -67,7 +67,8 @@
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
     "tailwindcss": "^3.4.17",
-    "use-debounce": "^10.0.4"
+    "use-debounce": "^10.0.4",
+    "expo-modules-core": "~2.2.3"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
