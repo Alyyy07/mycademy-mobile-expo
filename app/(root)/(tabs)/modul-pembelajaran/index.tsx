@@ -14,27 +14,20 @@ import { useShowToast } from "@/lib/hooks";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { Feather, MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const ModulPembelajaran = () => {
   const [loading, setLoading] = useState(false);
   const params = useLocalSearchParams();
   const [modul, setModul] = useState<any>();
   const showToast = useShowToast();
-  const { id, nama_matakuliah } = params as {
+  const { id, nama_matakuliah, deskripsi } = params as {
     id: string;
     nama_matakuliah: string;
+    deskripsi: string;
   };
 
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      const userInfo = await SecureStore.getItemAsync("userInfo");
-      if (!userInfo) {
-        router.push("/sign-in");
-      }
-    };
-
-    fetchUserInfo();
-
     const fetchMatakuliah = async () => {
       setLoading(true);
       try {
@@ -42,7 +35,7 @@ const ModulPembelajaran = () => {
         if (userInfo) {
           const user = JSON.parse(userInfo);
           const result = await fetchAPI(
-            `${process.env.EXPO_PUBLIC_API_URL}/api/auth/modul-pembelajaran?id=${id}`,
+            `${process.env.EXPO_PUBLIC_API_URL}/api/auth/modul-pembelajaran?id=${id}&email=${user.email}`,
             "GET",
             {},
             10000,
@@ -59,6 +52,8 @@ const ModulPembelajaran = () => {
           } else {
             showToast("Gagal mendapatkan data matakuliah", "error");
           }
+        } else{
+          router.push("/sign-in");
         }
       } catch (error) {
         showToast("Terjadi kesalahan saat mengambil data", "error");
@@ -71,7 +66,7 @@ const ModulPembelajaran = () => {
   }, []);
 
   return (
-    <View style={{ flex: 1 }} className="bg-accent">
+    <SafeAreaView style={{ flex: 1 }} className="bg-accent">
       <FlatList
         data={modul?.rps_details || []}
         renderItem={({ item }) => <Card item={item} />}
@@ -94,14 +89,14 @@ const ModulPembelajaran = () => {
                   {nama_matakuliah}
                 </Text>
                 <Text className="text-base font-montserratalternates-medium mt-2 text-white">
-                  {modul?.deskripsi}
+                  {deskripsi}
                 </Text>
               </View>
             </View>
           </View>
         }
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -159,17 +154,33 @@ const Card = ({ item }: { item: any }) => {
               className="bg-primary p-3 flex flex-row items-center gap-3 rounded-lg shadow-lg shadow-black  mt-3"
             >
               <Feather size={35} name="book-open" color="#F59E0B" />
-              <View>
-                <Text className="text-base font-montserratalternates-semibold text-white">
-                  {materi.title}
-                </Text>
+              <View className="max-w-[70%]">
+                <View className="flex flex-row items-center gap-2 max-w-[80%]">
+                  <Text className="text-base font-montserratalternates-semibold text-white" numberOfLines={1} ellipsizeMode="tail">
+                    {materi.title}
+                  </Text>
+                  {materi.materi_selesai ? (
+                    <View className="bg-green-300 p-1 flex flex-row gap-1 rounded-lg">
+                      <Text className="text-xs font-montserratalternates-semibold text-green-700">
+                        Selesai
+                      </Text>
+                    </View>
+                  ) : (
+                    <View className="bg-primary-300 p-1 flex flex-row gap-1 rounded-lg">
+                      <Text className="text-xs font-montserratalternates-semibold text-primary-700">
+                        Belum Selesai
+                      </Text>
+                    </View>
+                  )}
+                </View>
                 <Text className="text-sm font-montserratalternates-medium text-gray-300">
                   {materi.tipe_materi}
                 </Text>
               </View>
+
               <TouchableOpacity
                 className="ml-auto bg-primary-900 p-2 rounded-lg"
-                onPress={() => router.push(materi.link)}
+                onPress={() => router.push(`/(root)/(tabs)/modul-pembelajaran/materi?id=${materi.id}`)}
               >
                 <Feather size={20} name="eye" color="#dddd" />
               </TouchableOpacity>
@@ -188,9 +199,24 @@ const Card = ({ item }: { item: any }) => {
                 color="#F59E0B"
               />
               <View className="max-w-[70%]">
-                <Text className="text-base font-montserratalternates-semibold text-white">
+              <View className="flex flex-row items-center gap-2 max-w-[80%]">
+                <Text className="text-base font-montserratalternates-semibold text-white" numberOfLines={1} ellipsizeMode="tail">
                   {kuis.title}
                 </Text>
+                {kuis.kuis_selesai ? (
+                    <View className="bg-green-300 p-1 flex flex-row gap-1 rounded-lg">
+                      <Text className="text-xs font-montserratalternates-semibold text-green-700">
+                        Selesai
+                      </Text>
+                    </View>
+                  ) : (
+                    <View className="bg-primary-300 p-1 flex flex-row gap-1 rounded-lg">
+                      <Text className="text-xs font-montserratalternates-semibold text-primary-700">
+                        Belum Selesai
+                      </Text>
+                    </View>
+                  )}
+                </View>
                 <Text
                   numberOfLines={2}
                   ellipsizeMode="tail"

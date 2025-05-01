@@ -90,14 +90,14 @@ export default function Index() {
       } catch (error) {
         console.log("Error resetting storage:", error);
       }
+    } else{
+      showToast("Gagal mendapatkan data user", "error");
+      router.push("/sign-in");
     }
   };
 
   return (
-    <View
-      style={{ flex: 1 }}
-      className="bg-accent"
-    >
+    <SafeAreaView style={{ flex: 1 }} className="bg-accent">
       <FlatList
         data={matakuliah}
         renderItem={({ item }) => <Card item={item} />}
@@ -144,7 +144,7 @@ export default function Index() {
       <Button onPress={logout}>
         <ButtonText>Log Out</ButtonText>
       </Button>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -162,7 +162,11 @@ const Card = ({ item }: { item: any }) => {
   const handleShowMatakuliah = (item: any) => {
     router.push({
       pathname: "/modul-pembelajaran",
-      params: { id: item.id ,nama_matakuliah: item.nama_matakuliah},
+      params: {
+        id: item.id,
+        nama_matakuliah: item.nama_matakuliah,
+        deskripsi: item.deskripsi,
+      },
     });
   };
 
