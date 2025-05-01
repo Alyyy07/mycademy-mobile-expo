@@ -2,16 +2,16 @@ import NoResult from "@/components/NoResult";
 import { fetchAPI } from "@/lib/app.constant";
 import { useShowToast } from "@/lib/hooks";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as SecureStore from "expo-secure-store";
 import { ActivityIndicator, Text, View } from "react-native";
 import { WebView } from "react-native-webview";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Materi = () => {
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const params = useLocalSearchParams();
-  const [materi, setMateri] = React.useState<any>(null);
+  const [materi, setMateri] = useState<any>(null);
   const showToast = useShowToast();
 
   useEffect(() => {
