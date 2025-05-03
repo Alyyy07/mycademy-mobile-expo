@@ -43,7 +43,7 @@ const validateEmail = () => {
 
   useEffect(() => {
     if (!params.email) {
-      router.push("/sign-in");
+      router.replace("/sign-in");
     } else {
       fetchVerificationCode();
     }
@@ -73,14 +73,14 @@ const validateEmail = () => {
       } else {
         showToast(response.message);
         console.log(response.message);
-        router.push("/sign-in");
+        router.replace("/sign-in");
       }
     } catch (error) {
       if (error instanceof Error) {
         showToast(error.message,"error");
         console.log("error:"+error.message);
       }
-      router.push("/sign-in");
+      router.replace("/sign-in");
     } finally {
       setIsLoading(false);
     }
@@ -136,7 +136,7 @@ const validateEmail = () => {
       });
       if (response.status === "success") {
         showToast(response.message+", Silahkan login");
-        router.push("/sign-in");
+        router.replace("/sign-in");
       } else {
         setErrorMessages(response.message);
       }

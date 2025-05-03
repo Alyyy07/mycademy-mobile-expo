@@ -49,7 +49,7 @@ const SignIn = () => {
       const fetchUserInfo = async () => {
         const userInfo = await SecureStore.getItemAsync("userInfo");
         if (userInfo) {
-          router.push("/(root)/(tabs)");
+          router.replace("/(root)/(tabs)");
         }
       };
   
@@ -107,7 +107,7 @@ const SignIn = () => {
       <SafeAreaView className="bg-accent flex-1 px-10">
         <Box className="flex justify-between items-center mt-36 flex-row">
           <Text className="font-caveat-bold w-44 text-[38px] text-white">
-            MyCademy
+            MyCademy 
           </Text>
           <Image
             source={images.logonotext}

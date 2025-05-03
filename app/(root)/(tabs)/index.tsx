@@ -31,7 +31,7 @@ export default function Index() {
         const parsedUser = JSON.parse(userInfo);
         setUser(parsedUser);
       } else {
-        router.push("/sign-in");
+        router.replace("/sign-in");
       }
     };
 
@@ -85,14 +85,14 @@ export default function Index() {
         if (result) {
           await SecureStore.deleteItemAsync("userInfo");
           showToast(result.message);
-          router.push("/sign-in");
+          router.replace("/sign-in");
         }
       } catch (error) {
         console.log("Error resetting storage:", error);
       }
     } else{
       showToast("Gagal mendapatkan data user", "error");
-      router.push("/sign-in");
+      router.replace("/sign-in");
     }
   };
 
