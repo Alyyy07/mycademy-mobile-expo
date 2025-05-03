@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "splash": {
       "image": "./assets/images/icons/splash-screen.png",
-      "resizeMode": "fill",
+      "resizeMode": "contain",
       "backgroundColor": "#212529"
     },
     "scheme": "mycademy",

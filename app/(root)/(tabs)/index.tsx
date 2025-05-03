@@ -1,30 +1,28 @@
-import {
-  AlertDialog,
-  AlertDialogBackdrop,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-} from "@/components/ui/alert-dialog";
-import { Box } from "@/components/ui/box";
-import { Button, ButtonText } from "@/components/ui/button";
-import { Divider } from "@/components/ui/divider";
-import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, Image, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useShowToast } from "@/lib/hooks";
 import * as SecureStore from "expo-secure-store";
 import { router } from "expo-router";
 import NoResult from "@/components/NoResult";
-import { images } from "@/constants/image";
 import { fetchAPI } from "@/lib/app.constant";
+import Search from "@/components/Search";
+import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Progress, ProgressFilledTrack } from "@/components/ui/progress";
+import { Button, ButtonText } from "@/components/ui/button";
 
 export default function Index() {
   const showToast = useShowToast();
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [matakuliah, setMatakuliah] = useState<any>([]);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -33,51 +31,79 @@ export default function Index() {
         const parsedUser = JSON.parse(userInfo);
         setUser(parsedUser);
       } else {
-        router.push("/sign-in");
+        router.replace("/sign-in");
       }
     };
 
     fetchUserInfo();
+
+    const fetchMatakuliah = async () => {
+      setLoading(true);
+      try {
+        const userInfo = await SecureStore.getItemAsync("userInfo");
+        if (userInfo) {
+          const user = JSON.parse(userInfo);
+          const result = await fetchAPI(
+            `${process.env.EXPO_PUBLIC_API_URL}/api/auth/matakuliah?email=${user.email}`,
+            "GET",
+            {},
+            10000,
+            user.token
+          );
+          if (result) {
+            if (result.status === "success") {
+              setMatakuliah(result.data);
+            } else {
+              showToast(result.message, "error");
+            }
+          } else {
+            showToast("Gagal mendapatkan data matakuliah", "error");
+          }
+        }
+      } catch (error) {
+        console.log("Error fetching matakuliah:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMatakuliah();
   }, []);
 
   const logout = async () => {
     if (user !== null) {
       try {
-        const result = await fetchAPI(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/logout`, "POST", {
-          email: user.email,
-        },5000, user.token);
+        const result = await fetchAPI(
+          `${process.env.EXPO_PUBLIC_API_URL}/api/auth/logout`,
+          "POST",
+          {
+            email: user?.email,
+          },
+          10000,
+          user.token
+        );
         if (result) {
           await SecureStore.deleteItemAsync("userInfo");
           showToast(result.message);
-          router.push("/sign-in");
+          router.replace("/sign-in");
         }
       } catch (error) {
         console.log("Error resetting storage:", error);
       }
+    } else{
+      showToast("Gagal mendapatkan data user", "error");
+      router.replace("/sign-in");
     }
   };
 
-  const properties = [
-    { id: "1", name: "Property 1" },
-    { id: "2", name: "Property 2" },
-    { id: "3", name: "Property 3" },
-    { id: "4", name: "Property 4" },
-    { id: "5", name: "Property 5" },
-    { id: "6", name: "Property 6" },
-  ];
-
   return (
-    <View
-      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-      className="bg-accent"
-    >
+    <SafeAreaView style={{ flex: 1 }} className="bg-accent">
       <FlatList
-        data={properties}
+        data={matakuliah}
         renderItem={({ item }) => <Card item={item} />}
         keyExtractor={(item) => item.id}
-        numColumns={2}
+        numColumns={1}
         contentContainerClassName="pb-32"
-        columnWrapperClassName="flex gap-5 px-5"
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           loading ? (
@@ -87,41 +113,117 @@ export default function Index() {
           )
         }
         ListHeaderComponent={
-          <View className="px-5">
-            <View className="flex flex-row items-center justify-between mt-5">
-              <View className="flex flex-row items-center">
-                <Image
-                  source={{ uri: user?.avatar }}
-                  className="size-12 rounded-full"
-                />
-                <View className="flex flex-col items-start ml-2 justify-center">
-                  <Text className="font-rubik text-white">Good Morning</Text>
-                  <Text className="text-base font-rubik-medium text-white">
-                    {user?.name}
-                  </Text>
-                </View>
+          <View className="p-5 pt-0">
+            <View className="flex w-full flex-row items-center justify-between mb-3">
+              <View className="flex flex-col items-start justify-center">
+                <Text className="text-2xl font-montserratalternates-semibold max-w-[240px] pt-10 text-white">
+                  Hi,
+                  {user?.name}
+                </Text>
+                <Text className="text-base font-montserratalternates-medium mt-2 text-white">
+                  Ayo mulai belajar
+                </Text>
               </View>
-              <Image source={images.bell} className="size-6" />
+              <Image
+                source={{ uri: user?.avatar }}
+                className="size-16 rounded-full"
+              />
+            </View>
+            <Search />
+            <View className="flex flex-row items-center justify-between mt-6">
+              <Text className="text-2xl font-montserratalternates-semibold text-white">
+                Tahun Ajaran
+              </Text>
+              <Text className="text-2xl font-montserratalternates-semibold text-white">
+                {user?.tahun_ajaran}
+              </Text>
             </View>
           </View>
         }
       />
-      <Text>Welcome to the App!</Text>
-      <Button onPress={() => showToast("Hello World!")}>
-        <ButtonText>Show Toast</ButtonText>
-      </Button>
-
       <Button onPress={logout}>
         <ButtonText>Log Out</ButtonText>
       </Button>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const Card = ({ item }: { item: any }) => {
+  const hitungPersentase = (item: any) => {
+    const materiProgress = item.total_materi
+      ? item.materi_selesai / item.total_materi
+      : 0;
+    const kuisProgress = item.total_kuis
+      ? item.kuis_selesai / item.total_kuis
+      : 0;
+    return ((materiProgress + kuisProgress) * 50).toFixed(2);
+  };
+
+  const handleShowMatakuliah = (item: any) => {
+    router.push({
+      pathname: "/modul-pembelajaran",
+      params: {
+        id: item.id,
+        nama_matakuliah: item.nama_matakuliah,
+        deskripsi: item.deskripsi,
+      },
+    });
+  };
+
   return (
-    <Text className="text-black-300 font-rubik-medium text-lg bg-white rounded-lg p-5 shadow-md w-full h-24 flex items-center justify-center">
-      {item.name}
-    </Text>
+    <TouchableOpacity
+      onPress={() => handleShowMatakuliah(item)}
+      activeOpacity={0.8}
+    >
+      <View className="bg-gray-800 rounded-xl shadow-sm p-4 gap-4 mx-5 mb-5">
+        <View className="flex flex-row gap-4">
+          <AntDesign name="book" size={100} color="#4DC0B5" />
+          <View className="flex-col">
+            <Text className=" text-gray-100 text-xl  font-montserrat-semibold">
+              {item.nama_matakuliah}
+            </Text>
+            <View className="flex flex-row items-center mt-1">
+              <Feather size={15} name="user" color="#3B82F6" />
+              <Text className="ml-3 text-gray-100 text-md  font-montserrat-medium">
+                {item.dosen}
+              </Text>
+            </View>
+            <View className="flex flex-row items-center mt-1">
+              <Feather size={15} name="book-open" color="#F59E0B" />
+              <Text className="ml-3 text-gray-100 text-md  font-montserrat-medium">
+                {item.materi_selesai} / {item.total_materi} Materi
+              </Text>
+            </View>
+            <View className="flex flex-row items-center mt-1">
+              <MaterialCommunityIcons
+                name="clipboard-text-outline"
+                size={15}
+                color="#FBBF24"
+              />
+              <Text className="ml-3 text-gray-100 text-md  font-montserrat-medium">
+                {item.kuis_selesai} / {item.total_kuis} Kuis
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View className="p-4 flex gap-2 bg-gray-700 rounded-xl">
+          <View className="flex flex-row items-center justify-between">
+            <Text className="text-gray-100 text-md font-montserratalternates-semibold">
+              Progress Matakuliah
+            </Text>
+            <Text className="text-gray-100 text-md font-montserratalternates-semibold">
+              {hitungPersentase(item)}%
+            </Text>
+          </View>
+          <Progress
+            value={parseInt(hitungPersentase(item))}
+            size="md"
+            orientation="horizontal"
+          >
+            <ProgressFilledTrack />
+          </Progress>
+        </View>
+      </View>
+    </TouchableOpacity>
   );
 };

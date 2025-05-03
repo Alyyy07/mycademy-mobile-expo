@@ -43,7 +43,7 @@ const validateEmail = () => {
 
   useEffect(() => {
     if (!params.email) {
-      router.push("/sign-in");
+      router.replace("/sign-in");
     } else {
       fetchVerificationCode();
     }
@@ -70,18 +70,17 @@ const validateEmail = () => {
         setVerificationCode(response.data.verificationCode);
         setTimer(TIMER_DURATION);
         showToast(response.message);
-        console.log(response,response.data.verificationCode);
       } else {
         showToast(response.message);
         console.log(response.message);
-        router.push("/sign-in");
+        router.replace("/sign-in");
       }
     } catch (error) {
       if (error instanceof Error) {
-        showToast(error.message);
+        showToast(error.message,"error");
         console.log("error:"+error.message);
       }
-      router.push("/sign-in");
+      router.replace("/sign-in");
     } finally {
       setIsLoading(false);
     }
@@ -125,7 +124,6 @@ const validateEmail = () => {
       return;
     }
     const fullCode = codes.join("");
-    console.log(verificationCode, fullCode);
     if (typeof verificationCode === "string" && verificationCode.trim() !== fullCode.trim()) {
       setErrorMessages("Kode yang Anda masukkan salah");
       return;
@@ -138,7 +136,7 @@ const validateEmail = () => {
       });
       if (response.status === "success") {
         showToast(response.message+", Silahkan login");
-        router.push("/sign-in");
+        router.replace("/sign-in");
       } else {
         setErrorMessages(response.message);
       }
