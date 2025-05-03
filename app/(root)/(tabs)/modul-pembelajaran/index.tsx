@@ -82,14 +82,14 @@ const ModulPembelajaran = () => {
           )
         }
         ListHeaderComponent={
-          <View className=" p-5 pt-0">
-            <View className="w-full flex-row items-center justify-between mb-3">
-              <View className="flex flex-col items-start justify-center">
-                <Text className="text-2xl font-montserratalternates-semibold max-w-[240px] pt-10 text-white">
+          <View className=" p-5 py-0">
+            <View className="w-full flex-row items-center justify-between">
+              <View className="flex flex-col items-start justify-center mb-3">
+                <Text className="text-2xl font-montserratalternates-semibold max-w-[240px] text-white">
                   {nama_matakuliah}
                 </Text>
                 <Text className="text-base font-montserratalternates-medium mt-2 text-white">
-                  {deskripsi}
+                  {deskripsi ?? "Tidak ada deskripsi"}
                 </Text>
               </View>
             </View>
