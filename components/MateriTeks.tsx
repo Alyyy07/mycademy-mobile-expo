@@ -3,9 +3,13 @@ import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import WebView from "react-native-webview";
+import { fixUrls } from "@/lib/app.constant";
+import RenderHtml from "react-native-render-html";
+import { useWindowDimensions } from "react-native";
+import { ScrollView } from "react-native";
 
 const MateriTeks = ({ data }: { data: any }) => {
+  const { width } = useWindowDimensions();
   return (
     // Make container flex so WebView can expand
     <SafeAreaView className="p-5 flex-1 gap-4">
@@ -38,15 +42,18 @@ const MateriTeks = ({ data }: { data: any }) => {
       ) : null}
 
       {/* Container for WebView with explicit flex */}
-      <View className="flex-1 w-full border border-gray-600 overflow-hidden">
-        <WebView
-          // Use html source, not uri
-          source={{ html: data.text_content }}
-          style={{ width: "100%" }}
-          javaScriptEnabled
-          originWhitelist={["*"]}
+      <ScrollView className="flex-1 w-full rounded-xl p-3 py-0 border bg-primary-900 overflow-hidden">
+        <RenderHtml
+          contentWidth={width - 40}
+          source={{ html: fixUrls(data.text_content) }}
+          ignoredStyles={["width", "height", "color"]}
+          computeEmbeddedMaxWidth={(contentWidth) => contentWidth}
+          renderersProps={{
+            img: { enableExperimentalPercentWidth: true },
+          }}
+          baseStyle={{ color: "white" }}
         />
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
