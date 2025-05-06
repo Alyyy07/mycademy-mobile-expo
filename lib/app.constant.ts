@@ -36,7 +36,7 @@ export const validateEmail = (email: string) => {
   return {
     isValid,
     message: "Masukkan Email yang valid",
-  }
+  };
 };
 
 export const fontSizes = {
@@ -68,13 +68,19 @@ export const fontSizes = {
   FONT35: windowWidth(35),
 };
 
-export const fetchAPI = async (url: string, method?: string, body?: any, timeout: number = 30000,token?:string) => {
+export const fetchAPI = async (
+  url: string,
+  method?: string,
+  body?: any,
+  timeout: number = 30000,
+  token?: string
+) => {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeout);
 
   try {
     const headers: HeadersInit = {
-      "Accept": "application/json",
+      Accept: "application/json",
       "Content-Type": "application/json",
       "X-CLIENT-ID": process.env.EXPO_PUBLIC_API_KEY!,
     };
@@ -91,16 +97,17 @@ export const fetchAPI = async (url: string, method?: string, body?: any, timeout
       method: method ?? "GET",
       headers: headers,
       signal: controller.signal,
-    }
+    };
 
-    if (body && (method !== "GET" && method !== "HEAD")) {
-      init['body'] = JSON.stringify(body);
+    if (body && method !== "GET" && method !== "HEAD") {
+      init["body"] = JSON.stringify(body);
     }
     const response = await fetch(url, init);
 
     clearTimeout(timeoutId);
     const data = await response.json();
     if (response.status !== 200) {
+      console.log("Error:", data);
       return {
         status: "error",
         message: data.message,
@@ -116,6 +123,12 @@ export const fetchAPI = async (url: string, method?: string, body?: any, timeout
     return {
       status: "error",
       message: "Terjadi kesalahan saat menghubungi server",
-    }
+    };
   }
 };
+
+export const fixUrls = (html: string) =>
+  html.replace(
+    /https?:\/\/project-skripsi\.test/g,
+    "http://192.168.92.100:8000"
+  );
