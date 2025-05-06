@@ -53,7 +53,7 @@ const ModulPembelajaran = () => {
             showToast("Gagal mendapatkan data matakuliah", "error");
           }
         } else{
-          router.push("/sign-in");
+          router.replace("/sign-in");
         }
       } catch (error) {
         showToast("Terjadi kesalahan saat mengambil data", "error");
@@ -119,14 +119,14 @@ const Card = ({ item }: { item: any }) => {
               </View>
             ) : new Date(item.tanggal_pertemuan) > new Date() ? (
               <View className="bg-gray-300 p-1 flex flex-row gap-1 rounded-lg">
-                <Feather size={15} name="check-circle" color="#374151" />
+                <Feather size={15} name="alert-circle" color="#374151" />
                 <Text className="text-xs font-montserratalternates-semibold text-gray-700">
                   Sesi belum dimulai
                 </Text>
               </View>
             ) : (
               <View className="bg-primary-300 p-1 flex flex-row gap-1 rounded-lg">
-                <Feather size={15} name="check-circle" color=" #2762ce" />
+                <Feather size={15} name="bell" color=" #2762ce" />
                 <Text className="text-xs font-montserratalternates-semibold text-primary-700">
                   Sesi sedang berlangsung
                 </Text>
@@ -227,7 +227,7 @@ const Card = ({ item }: { item: any }) => {
               </View>
               <TouchableOpacity
                 className="ml-auto bg-primary-900 p-2 rounded-lg"
-                onPress={() => router.push(kuis.link)}
+                onPress={() => router.push(`/(root)/(tabs)/modul-pembelajaran/kuis?id=${kuis.id}`)}
               >
                 <Feather size={20} name="eye" color="#dddd" />
               </TouchableOpacity>
