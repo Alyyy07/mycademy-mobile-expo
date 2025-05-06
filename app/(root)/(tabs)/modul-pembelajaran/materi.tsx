@@ -43,7 +43,7 @@ const Materi = () => {
     const fetchMateri = async () => {
       setIsLoading(true);
       const info = await SecureStore.getItemAsync("userInfo");
-      if (!info) return router.push("/sign-in");
+      if (!info) return router.replace("/sign-in");
       const user = JSON.parse(info);
       setUser(user);
       try {
@@ -51,7 +51,6 @@ const Materi = () => {
           `${process.env.EXPO_PUBLIC_API_URL}/api/auth/modul-pembelajaran/materi?id=${params.id}&email=${user.email}`,
           "GET"
         );
-        console.log(res.data);
         if (res?.status === "success") setMateri(res.data);
         else showToast(res?.message ?? "Gagal memuat materi", "error");
       } catch {
@@ -144,7 +143,7 @@ const Materi = () => {
         <MateriTeks data={materi} />
       )}
 
-      <Button
+      {materi && !isLoading && (<Button
         action="primary"
         disabled={!!isLoading || !!materi?.materi_selesai}
         className="m-5 mt-auto rounded-3xl h-16 bg-primary py-3 shadow-lg shadow-black disabled:opacity-50"
@@ -157,7 +156,7 @@ const Materi = () => {
             Tandai sudah selesai
           </ButtonText>
         )}
-      </Button>
+      </Button>)}
 
       <AlertDialog
         isOpen={showAlertDialog}
@@ -168,10 +167,10 @@ const Materi = () => {
         <AlertDialogBackdrop />
         <AlertDialogContent className={"bg-primary-900 border-0"}>
           <AlertDialogHeader className="flex flex-col items-start">
-            <Heading size="md" className="font-semibold text-white">
+            <Heading size="xl" className="font-semibold text-white">
               Seberapa paham Anda dengan materi ini?
             </Heading>
-            <Text className="text-sm text-gray-300 mt-1">
+            <Text className="text-md text-gray-300 mt-1">
               Silakan beri penilaian dan komentar Anda. (Jawaban tidak dapat
               diubah)
             </Text>
