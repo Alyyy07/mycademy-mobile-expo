@@ -90,7 +90,7 @@ export default function Index() {
       } catch (error) {
         console.log("Error resetting storage:", error);
       }
-    } else{
+    } else {
       showToast("Gagal mendapatkan data user", "error");
       router.replace("/sign-in");
     }
@@ -150,13 +150,11 @@ export default function Index() {
 
 const Card = ({ item }: { item: any }) => {
   const hitungPersentase = (item: any) => {
-    const materiProgress = item.total_materi
-      ? item.materi_selesai / item.total_materi
-      : 0;
-    const kuisProgress = item.total_kuis
-      ? item.kuis_selesai / item.total_kuis
-      : 0;
-    return ((materiProgress + kuisProgress) * 50).toFixed(2);
+    const totalSelesai = item.materi_selesai + item.kuis_selesai;
+    const totalItem = item.total_materi + item.total_kuis;
+
+    const progress = totalItem ? totalSelesai / totalItem : 0;
+    return (progress * 100).toFixed(2);
   };
 
   const handleShowMatakuliah = (item: any) => {
