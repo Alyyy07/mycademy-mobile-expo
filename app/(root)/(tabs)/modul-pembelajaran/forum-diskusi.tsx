@@ -9,7 +9,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
-  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as SecureStore from "expo-secure-store";
@@ -17,7 +16,6 @@ import { router, useLocalSearchParams } from "expo-router";
 import { fetchAPI } from "@/lib/app.constant";
 import { useShowToast } from "@/lib/hooks";
 import NoResult from "@/components/NoResult";
-import { set } from "date-fns";
 
 interface Message {
   id: number;
@@ -40,7 +38,7 @@ const ForumDiskusi = () => {
   const [newMsg, setNewMsg] = useState("");
   const [authorId, setAuthorId] = useState<string | null>(null);
   const [materiTitle, setMateriTitle] = useState<string | null>(null);
-  const [isClosed, setIsClosed] = useState(false);
+  const [isClosed, setIsClosed] = useState(true);
   const showToast = useShowToast();
   const params = useLocalSearchParams<{ id: string }>();
   const flatListRef = useRef<FlatList<Message>>(null);
@@ -54,9 +52,7 @@ const ForumDiskusi = () => {
         "GET"
       );
       if (res.status === "success") {
-        // pisahkan fields pesan dan meta
         const { materi_title, is_closed, author_id, ...rawMsgs } = res.data;
-        // Object.values akan mengambil hanya value Message dari numeric keys
         const messages = Object.values(rawMsgs).filter(
           (v): v is Message => typeof v !== "string"
         );
@@ -65,7 +61,7 @@ const ForumDiskusi = () => {
         setMateriTitle(materi_title);
         if (messages.length) {
           setDiscussion({ messages });
-        } // scroll to bottom
+        }
         setTimeout(
           () => flatListRef.current?.scrollToEnd({ animated: true }),
           100
@@ -80,7 +76,6 @@ const ForumDiskusi = () => {
     }
   };
 
-  // initial load & refetch tiap 5 detik
   useEffect(() => {
     (async () => {
       const info = await SecureStore.getItemAsync("userInfo");
