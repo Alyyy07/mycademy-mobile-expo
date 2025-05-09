@@ -42,7 +42,7 @@ const MateriTeks = ({ data }: { data: any }) => {
       ) : null}
 
       {/* Container for WebView with explicit flex */}
-      <ScrollView className="flex-1 w-full rounded-xl py-0 border bg-primary-900 overflow-hidden">
+      <ScrollView className="flex-1 w-full rounded-xl p-3 py-0 border bg-primary-900 overflow-hidden">
         <RenderHtml
           contentWidth={width - 40}
           source={{ html: fixUrls(data.text_content) }}
@@ -51,7 +51,7 @@ const MateriTeks = ({ data }: { data: any }) => {
           renderersProps={{
             img: { enableExperimentalPercentWidth: true },
           }}
-          baseStyle={{ color: "white", padding: 20}}
+          baseStyle={{ color: "white" }}
         />
       </ScrollView>
     </SafeAreaView>

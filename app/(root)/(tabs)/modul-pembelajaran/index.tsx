@@ -139,6 +139,13 @@ const Card = ({ item }: { item: any }) => {
             })}
           </Text>
         </View>
+
+        {item.tanggal_realisasi !== null &&
+        !isNaN(new Date(item.tanggal_realisasi).getTime()) ? (
+          <TouchableOpacity className="ml-auto flex flex-row items-center gap-3 bg-primary-900 p-3 rounded-lg">
+            <Octicons size={15} name="comment-discussion" color="#dddd" />
+          </TouchableOpacity>
+        ) : null}
       </View>
       {item.materi.length > 0
         ? item.materi?.map((materi: any) => (
