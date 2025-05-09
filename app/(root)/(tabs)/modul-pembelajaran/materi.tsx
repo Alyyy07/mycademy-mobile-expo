@@ -24,6 +24,8 @@ import { Heading } from "@/components/ui/heading";
 import MateriVideo from "@/components/MateriVideo";
 import MateriPDF from "@/components/MateriPDF";
 import MateriTeks from "@/components/MateriTeks";
+import { Fab, FabIcon } from "@/components/ui/fab";
+import { MessageCircleIcon } from "@/components/ui/icon";
 
 const Materi = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -136,27 +138,44 @@ const Materi = () => {
       {materi && materi.tipe_materi === "video" && (
         <MateriVideo data={materi} />
       )}
-      {materi && materi.tipe_materi === "pdf" && (
-        <MateriPDF data={materi} />
-      )}
-      {materi && materi.tipe_materi === "teks" && (
-        <MateriTeks data={materi} />
+      {materi && materi.tipe_materi === "pdf" && <MateriPDF data={materi} />}
+      {materi && materi.tipe_materi === "teks" && <MateriTeks data={materi} />}
+
+      {materi && !isLoading && (
+        <Button
+          action="primary"
+          disabled={!!isLoading || !!materi?.materi_selesai}
+          className="m-5 mt-auto rounded-3xl h-16 bg-primary py-3 shadow-lg shadow-black disabled:opacity-50"
+          onPress={() => setShowAlertDialog(true)}
+        >
+          {isLoading ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <ButtonText className="text-white text-lg font-montserrat-semibold">
+              Tandai sudah selesai
+            </ButtonText>
+          )}
+        </Button>
       )}
 
-      {materi && !isLoading && (<Button
-        action="primary"
-        disabled={!!isLoading || !!materi?.materi_selesai}
-        className="m-5 mt-auto rounded-3xl h-16 bg-primary py-3 shadow-lg shadow-black disabled:opacity-50"
-        onPress={() => setShowAlertDialog(true)}
-      >
-        {isLoading ? (
-          <ActivityIndicator color="white" />
-        ) : (
-          <ButtonText className="text-white text-lg font-montserrat-semibold">
-            Tandai sudah selesai
-          </ButtonText>
-        )}
-      </Button>)}
+      {materi?.rps_detail?.tanggal_realisasi !== null &&
+      !isNaN(new Date(materi?.rps_detail?.tanggal_realisasi).getTime()) ? (
+        <Fab
+          placement="discussion"
+          size="lg"
+          className="bg-primary-700 h-16 w-16 shadow-lg shadow-black"
+          onPress={() =>
+            router.push(
+              `/(root)/(tabs)/modul-pembelajaran/forum-diskusi?id=${materi.id}`
+            )
+          }
+          isDisabled={isLoading}
+          isHovered={false}
+          isPressed={false}
+        >
+          <FabIcon as={MessageCircleIcon} size="xl" color="white" />
+        </Fab>
+      ) : null}
 
       <AlertDialog
         isOpen={showAlertDialog}

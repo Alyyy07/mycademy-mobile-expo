@@ -16,13 +16,13 @@ import { fetchAPI } from "@/lib/app.constant";
 import Search from "@/components/Search";
 import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Progress, ProgressFilledTrack } from "@/components/ui/progress";
-import { Button, ButtonText } from "@/components/ui/button";
 
 export default function Index() {
   const showToast = useShowToast();
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [matakuliah, setMatakuliah] = useState<any>([]);
+  const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -76,9 +76,7 @@ export default function Index() {
         const result = await fetchAPI(
           `${process.env.EXPO_PUBLIC_API_URL}/api/auth/logout`,
           "POST",
-          {
-            email: user?.email,
-          },
+          { email: user?.email },
           10000,
           user.token
         );
@@ -113,23 +111,40 @@ export default function Index() {
           )
         }
         ListHeaderComponent={
-          <View className="p-5 pt-0">
+          <View className="p-5 pt-0 relative">
             <View className="flex w-full flex-row items-center justify-between mb-3">
               <View className="flex flex-col items-start justify-center">
                 <Text className="text-2xl font-montserratalternates-semibold max-w-[240px] pt-10 text-white">
-                  Hi,
-                  {user?.name}
+                  Hi, {user?.name}
                 </Text>
                 <Text className="text-base font-montserratalternates-medium mt-2 text-white">
                   Ayo mulai belajar
                 </Text>
               </View>
-              <Image
-                source={{ uri: user?.avatar }}
-                className="size-16 rounded-full"
-              />
+              <View>
+                <TouchableOpacity onPress={() => setShowMenu((s) => !s)}>
+                  <Image
+                    source={{ uri: user?.avatar }}
+                    className="size-16 rounded-full"
+                  />
+                </TouchableOpacity>
+
+                {/* Dropdown Menu */}
+                {showMenu && (
+                  <View className="absolute  top-[68px] right-0 bg-white w-36 rounded-lg shadow-lg z-10">
+                    <TouchableOpacity onPress={logout} className="flex flex-row items-center px-4 py-2 gap-2 rounded-lg hover:bg-gray-100">
+                      <Feather name="log-out" size={20} color="#b91c1c" />
+                      <Text className="text-xs font-montserratalternates-medium text-red-700">
+                        Log Out
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </View>
             </View>
+
             <Search />
+
             <View className="flex flex-row items-center justify-between mt-6">
               <Text className="text-2xl font-montserratalternates-semibold text-white">
                 Tahun Ajaran
@@ -141,9 +156,6 @@ export default function Index() {
           </View>
         }
       />
-      <Button onPress={logout}>
-        <ButtonText>Log Out</ButtonText>
-      </Button>
     </SafeAreaView>
   );
 }
