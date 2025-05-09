@@ -18,7 +18,7 @@ import { Button, ButtonText } from "@/components/ui/button";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RenderHtml from "react-native-render-html";
 import { Fab, FabIcon } from "@/components/ui/fab";
-import { MenuIcon } from "@/components/ui/icon";
+import { MenuIcon, MessageCircleIcon } from "@/components/ui/icon";
 import {
   Actionsheet,
   ActionsheetBackdrop,
@@ -268,6 +268,9 @@ const Kuis = () => {
           className="flex-1 h-full"
           showsVerticalScrollIndicator={false}
         >
+          <Text className="text-gray-200 mb-2 font-montserrat-semibold">
+            Soal {currentIndex + 1} dari {quiz.questions.length}
+          </Text>
           <View className="bg-primary p-3 rounded-xl mb-6">
             <RenderHtml
               contentWidth={maxImageWidth}
@@ -315,6 +318,9 @@ const Kuis = () => {
           className="flex-1 h-full"
           showsVerticalScrollIndicator={false}
         >
+          <Text className="text-gray-200 mb-2 font-montserrat-semibold">
+            Soal {currentIndex + 1} dari {quiz.questions.length}
+          </Text>
           <View className="bg-primary p-3 rounded-xl mb-6">
             <RenderHtml
               contentWidth={maxImageWidth}
@@ -436,7 +442,7 @@ const Kuis = () => {
       {!quiz?.kuis_selesai && showQuiz ? (
         <Fab
           size="lg"
-          className="bg-primary-900 border-0 shadow-lg shadow-black"
+          className="bg-primary-800 h-16 w-16 border-0 shadow-lg shadow-black"
           onPress={() => setShowActionsheet(true)}
           isDisabled={isLoading}
           placement="bottom right"
@@ -552,9 +558,6 @@ const Kuis = () => {
             <Heading size="lg" className="font-semibold text-white">
               Apakah anda yakin ingin memulai kuis?
             </Heading>
-            <Text className="text-md text-gray-300 mt-1">
-              Anda tidak dapat keluar sebelum jawaban disubmit.
-            </Text>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <Button
