@@ -45,7 +45,7 @@ const MateriPDF = ({ data }: { data: any }) => {
   return (
     <SafeAreaView className="p-5 gap-3">
       <View className="flex-row justify-between items-center w-full">
-        <Text className="text-2xl font-montserratalternates-semibold text-white">
+        <Text className="text-2xl font-montserratalternates-semibold text-white" style={{ maxWidth: '70%' }} numberOfLines={2} ellipsizeMode="tail">
           {data.title}
         </Text>
         {data.materi_selesai ? (
