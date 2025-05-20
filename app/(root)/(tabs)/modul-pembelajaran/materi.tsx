@@ -37,7 +37,6 @@ const Materi = () => {
   const [selectedScale, setSelectedScale] = useState<"1" | "2" | "3" | "4">(
     "1"
   );
-  const commentRef = useRef<string>("");
   const showToast = useShowToast();
   const params = useLocalSearchParams();
 
@@ -100,7 +99,6 @@ const Materi = () => {
         materi_id: materi.id,
         email: user?.email,
         skala_pemahaman: selectedScale,
-        komentar: commentRef.current || null,
       };
       const res = await fetchAPI(
         `${process.env.EXPO_PUBLIC_API_URL}/api/auth/modul-pembelajaran/materi-selesai`,
@@ -219,16 +217,6 @@ const Materi = () => {
                 </Text>
               </TouchableOpacity>
             ))}
-
-            <TextInput
-              defaultValue={commentRef.current}
-              onChangeText={(text) => {
-                commentRef.current = text;
-              }}
-              placeholder="Komentar (opsional)"
-              placeholderTextColor="#ccc"
-              className="border border-gray-500 rounded px-3 py-2 mt-3 text-white"
-            />
           </AlertDialogBody>
           <AlertDialogFooter>
             <Button
