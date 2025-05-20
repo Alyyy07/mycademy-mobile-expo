@@ -38,6 +38,8 @@ const ForumDiskusi = () => {
   const [newMsg, setNewMsg] = useState("");
   const [authorId, setAuthorId] = useState<string | null>(null);
   const [materiTitle, setMateriTitle] = useState<string | null>(null);
+  const [lastMessageId, setLastMessageId] = useState<number | null>(null);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [isClosed, setIsClosed] = useState(true);
   const showToast = useShowToast();
   const params = useLocalSearchParams<{ id: string }>();
@@ -56,16 +58,23 @@ const ForumDiskusi = () => {
         const messages = Object.values(rawMsgs).filter(
           (v): v is Message => typeof v !== "string"
         );
+
         setIsClosed(is_closed);
         setAuthorId(author_id);
         setMateriTitle(materi_title);
+
         if (messages.length) {
+          const lastMsg = messages[messages.length - 1];
+          const isNewMessage = lastMsg.id !== lastMessageId;
+
           setDiscussion({ messages });
+
+          if (isFirstLoad || isNewMessage) {
+            flatListRef.current?.scrollToEnd({ animated: !isFirstLoad });
+            setLastMessageId(lastMsg.id);
+            setIsFirstLoad(false); // Pastikan tidak scroll otomatis lagi kecuali ada pesan baru
+          }
         }
-        setTimeout(
-          () => flatListRef.current?.scrollToEnd({ animated: true }),
-          100
-        );
       } else {
         showToast(res?.message ?? "Gagal memuat diskusi", "error");
       }
