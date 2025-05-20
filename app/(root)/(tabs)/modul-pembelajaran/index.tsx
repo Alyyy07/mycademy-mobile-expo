@@ -85,7 +85,7 @@ const ModulPembelajaran = () => {
           <View className=" p-5 py-0">
             <View className="w-full flex-row items-center justify-between">
               <View className="flex flex-col items-start justify-center mb-3">
-                <Text className="text-2xl font-montserratalternates-semibold max-w-[240px] text-white">
+                <Text className="text-2xl font-montserratalternates-semibold text-white" numberOfLines={2} ellipsizeMode="tail">
                   {nama_matakuliah}
                 </Text>
                 <Text className="text-base font-montserratalternates-medium mt-2 text-white">
@@ -192,7 +192,7 @@ const Card = ({ item }: { item: any }) => {
                 color="#F59E0B"
               />
               <View className="max-w-[70%]">
-              <View className="flex flex-row items-center gap-2 max-w-[80%]">
+              <View className="flex flex-row items-center gap-2 max-w-[70%]">
                 <Text className="text-base font-montserratalternates-semibold text-white" numberOfLines={1} ellipsizeMode="tail">
                   {kuis.title}
                 </Text>

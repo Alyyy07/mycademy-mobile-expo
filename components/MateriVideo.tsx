@@ -24,7 +24,7 @@ const MateriVideo = ({ data }: { data: any }) => {
       className="p-5 gap-4"
     >
       <View className="flex-row justify-between items-center w-full">
-        <Text className="text-2xl font-montserratalternates-semibold text-white">
+        <Text className="text-2xl font-montserratalternates-semibold text-white" style={{ maxWidth: '70%' }} numberOfLines={2} ellipsizeMode="tail">
           {data.title}
         </Text>
         {data.materi_selesai ? (

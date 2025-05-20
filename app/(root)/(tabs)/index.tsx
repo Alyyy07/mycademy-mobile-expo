@@ -189,12 +189,12 @@ const Card = ({ item }: { item: any }) => {
         <View className="flex flex-row gap-4">
           <AntDesign name="book" size={100} color="#4DC0B5" />
           <View className="flex-col">
-            <Text className=" text-gray-100 text-xl  font-montserrat-semibold">
+            <Text className=" text-gray-100 text-xl  font-montserrat-semibold max-w-64" numberOfLines={1} ellipsizeMode="tail">
               {item.nama_matakuliah}
             </Text>
             <View className="flex flex-row items-center mt-1">
               <Feather size={15} name="user" color="#3B82F6" />
-              <Text className="ml-3 text-gray-100 text-md  font-montserrat-medium">
+              <Text className="ml-3 text-gray-100 text-md  font-montserrat-medium max-w-56" numberOfLines={1} ellipsizeMode="tail">
                 {item.dosen}
               </Text>
             </View>

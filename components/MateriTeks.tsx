@@ -13,8 +13,8 @@ const MateriTeks = ({ data }: { data: any }) => {
   return (
     // Make container flex so WebView can expand
     <SafeAreaView className="p-5 flex-1 gap-4">
-      <View className="flex-row justify-between items-center w-full">
-        <Text className="text-2xl font-montserratalternates-semibold text-white">
+      <View className="flex-row justify-between items-center">
+        <Text className="text-2xl font-montserratalternates-semibold text-white" style={{ maxWidth: '70%' }} numberOfLines={2} ellipsizeMode="tail">
           {data.title}
         </Text>
         {data.materi_selesai ? (
