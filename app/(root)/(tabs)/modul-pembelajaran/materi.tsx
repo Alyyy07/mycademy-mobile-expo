@@ -188,7 +188,7 @@ const Materi = () => {
               Seberapa paham Anda dengan materi ini?
             </Heading>
             <Text className="text-md text-gray-300 mt-1">
-              Silakan beri penilaian dan komentar Anda. (Jawaban tidak dapat
+              Silakan beri penilaian Anda. (Jawaban tidak dapat
               diubah)
             </Text>
           </AlertDialogHeader>

@@ -129,6 +129,4 @@ export const fetchAPI = async (
 
 export const fixUrls = (html: string) =>
   html.replace(
-    /https?:\/\/project-skripsi\.test/g,
-    "http://192.168.92.100:8000"
-  );
+    /https?:\/\/project-skripsi\.test/g,() => process.env.EXPO_PUBLIC_API_URL!);
