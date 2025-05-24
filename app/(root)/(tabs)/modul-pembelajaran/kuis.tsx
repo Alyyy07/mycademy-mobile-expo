@@ -35,7 +35,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Feather } from "@expo/vector-icons";
 import { format } from "date-fns";
-import { id, is } from "date-fns/locale";
+import { id } from "date-fns/locale";
 
 const Kuis = () => {
   const [quiz, setQuiz] = useState<any>(null);
@@ -423,6 +423,7 @@ const Kuis = () => {
           <Text className="text-gray-300 text-center mb-6 text-7xl">
             {quiz.nilai}
           </Text>
+          {quiz.can_view_history ? (
           <Button
             action="primary"
             className=" rounded-3xl h-16 bg-primary py-3 shadow-lg shadow-black disabled:opacity-50"
@@ -436,6 +437,11 @@ const Kuis = () => {
               </ButtonText>
             )}
           </Button>
+          ) : (
+            <Text className="text-gray-400 text-sm mt-2">
+              Riwayat jawaban tidak tersedia
+            </Text>
+          )}
         </View>
       ) : null}
 
