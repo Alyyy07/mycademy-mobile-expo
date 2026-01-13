@@ -1,40 +1,78 @@
-# Welcome to your Expo app 👋
+<p align="center">
+  <a href="https://expo.dev" target="_blank">
+    <img src="https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white" alt="Expo" />
+  </a>
+</p>
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# MyCademy - Student Mobile Portal
 
-## Get started
+A dedicated mobile application for **students** to access the MyCademy ecosystem. This app allows students to engage with learning materials, take quizzes, and participate in class discussions directly from their mobile devices.
 
-1. Install dependencies
+It serves as the client-side interface for the MyCademy web platform, designed to facilitate learning anytime, anywhere.
 
-   ```bash
-   npm install
-   ```
+## Key Features
 
-2. Start the app
+-   **Material Access**: Browse, download, and study learning materials and assignments.
+-   **Discussion Forums**: Participate in dedicated discussion spaces for each material to foster student engagement.
+-   **Quiz & Assignments**: Take quizzes and submit assignments seamlessly.
+-   **Performance Tracking**:
+    -   View **Material Understanding Scale** and **Quiz Scores**.
+    -   Track **On-time Completion Rates**.
+    -   Monitor **Forum Participation** and overall status.
 
-   ```bash
+## Backend Repository
+
+The backend and lecturer/admin management dashboard for this application (MyCademy Web Portal) can be found here:
+
+💻 **[MyCademy Web Portal (Laravel) - GitHub Repository](https://github.com/Alyyy07/project-skripsi)**
+
+## Tech Stack
+
+This project is built using:
+
+-   **Framework:** [Expo](https://expo.dev) & [React Native](https://reactnative.dev)
+-   **Language:** JavaScript / TypeScript
+-   **UI / Styling:**
+    -   [Gluestack UI](https://gluestack.io/)
+    -   [NativeWind](https://www.nativewind.dev/) (Tailwind CSS)
+    -   `@expo/vector-icons`
+-   **Navigation:** [Expo Router](https://docs.expo.dev/router/introduction)
+-   **Data Fetching:** Axios
+-   **Authentication:** Google Sign-In & Laravel Sanctum (via API)
+-   **Other Key Packages:**
+    -   `react-native-reanimated` & `@legendapp/motion` - Animations
+    -   `react-native-render-html` - Content rendering
+    -   `react-native-svg` - Vector graphics
+    -   `date-fns` - Date formatting
+
+## Getting Started
+
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/Alyyy07/mycademy-mobile-expo.git
+    cd mycademy-mobile-expo
+    ```
+
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
+
+3.  **Environment Setup**
+    Create a `.env` file in the root directory and configure your backend API URL.
+    ```env
+    EXPO_PUBLIC_API_URL=http://your-laravel-backend-url/api
+    ```
+
+4.  **Run the Application**
+    ```bash
     npx expo start
-   ```
+    ```
+    -   Press `a` for Android Emulator.
+    -   Press `i` for iOS Simulator.
+    -   Press `w` for Web.
+    -   Scan the QR code with **Expo Go** on your physical device.
 
-In the output, you'll find options to open the app in a
+## License
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This project is open-source and licensed under the [MIT License](https://opensource.org/licenses/MIT).
